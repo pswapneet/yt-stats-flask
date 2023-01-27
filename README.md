@@ -1,1 +1,1 @@
-# flask-yt-stats
+# yt-stats-flask
