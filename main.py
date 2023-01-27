@@ -8,7 +8,7 @@ from googleapiclient.discovery import build
 app = Flask(__name__)
 
 @app.route("/")
-def dlf_stats():
+def stats():
     youtube = build('youtube', 'v3', developerKey=config.developer_key)
     request = youtube.channels().list(part='snippet', \
         id=config.channel_id)
