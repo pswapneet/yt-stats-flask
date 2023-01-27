@@ -26,7 +26,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
 # copy project files
-COPY . .
+# COPY . .
 
 # start app
-CMD ["flask", "run", "--host=0.0.0.0"]
+# CMD ["flask", "run", "--host=0.0.0.0"]
