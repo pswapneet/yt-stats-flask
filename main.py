@@ -5,7 +5,7 @@ import config
 #import json
 from googleapiclient.discovery import build
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 @app.route("/")
 def stats():

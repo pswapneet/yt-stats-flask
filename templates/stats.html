@@ -2,23 +2,35 @@
 <html>
 <head>
     <title>Youtube Stats</title>
+    <link rel="stylesheet" type="text/css" 
+    href="{{ url_for('static', filename='css/stylestats.css') }}">
 </head>
 <body>
-    <div>
+    <div class="header">
         <h1>Title: {{ resource["items"][0]["snippet"]["title"]  }}</h1>
+    </div>
+    <div class="disc">
         <h2>Description: {{ resource["items"][0]["snippet"]["description"] }}</h2>
     </div>
-    <div>
-        <h3>Total number of uploaded videos on channel: 
+    <div class="container">
+        <!-- Column 1 -->
+        <div class="column">
+        <!-- Content for column 1 -->
+            <h3>Total number of uploaded videos on channel: 
             {{ resource["items"][0]["statistics"]["videoCount"] }}
-        </h3>
-        <h4>Total number of views for the channel's 
+            </h3>
+            <h4>Total number of views for the channel's 
             {{ resource["items"][0]["statistics"]["videoCount"] }} videos: 
             {{ resource["items"][0]["statistics"]["viewCount"] }}
-        </h4>
-        <h5>Total number of subscribers: 
+            </h4>
+        </div>
+        <!-- Column 2 -->
+        <div class="column">
+        <!-- Content for column 2 -->
+            <h5>Total number of subs: 
             {{ resource["items"][0]["statistics"]["subscriberCount"] }}
-        </h5>
+            </h5>
+        </div>
     </div>
-</body>        
+    </body>        
 </html>
