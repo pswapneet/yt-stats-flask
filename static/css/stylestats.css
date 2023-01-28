@@ -16,8 +16,12 @@ h1, h2, h3, h4, h5 {
 .header {
     color: #000000; /* Black */
     text-shadow: 1px 1px #FFFFFF; /* White */
-
 }
+
+.recentvid {
+    background-color: #392f2f;
+}
+
 .disc {
     padding: 10px;
     border-radius: 10px;

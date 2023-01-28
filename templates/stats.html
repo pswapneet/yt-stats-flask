@@ -5,31 +5,45 @@
     <link rel="stylesheet" type="text/css" 
     href="{{ url_for('static', filename='css/stylestats.css') }}">
 </head>
-<body>
     <div class="header">
-        <h1>Title: {{ resource["items"][0]["snippet"]["title"]  }}</h1>
+        <h1>Title: {{ channel_resource["items"][0]["snippet"]["title"] }}</h1>
+    </div>
+    <div class="recentvid">
+        <p>Most recent video published at: 
+            {{ search_resource["items"][0]["snippet"]["publishedAt"] }} 
+            with the title <b>{{ search_resource["items"][0]["snippet"]["title"] }}</b>. 
+            here is the thumbnail: 
+            <img src="{{ search_resource["items"][0]["snippet"]["thumbnails"]["default"]["url"]}}" alt="thumbnail">
+            <br>
+            video length: {{ latest_video_duration }} 
+        </p>  
     </div>
     <div class="disc">
-        <h2>Description: {{ resource["items"][0]["snippet"]["description"] }}</h2>
+        <h2>Description: {{ channel_resource["items"][0]["snippet"]["description"] }}</h2>
     </div>
     <div class="container">
         <!-- Column 1 -->
         <div class="column">
         <!-- Content for column 1 -->
             <h3>Total number of uploaded videos on channel: 
-            {{ resource["items"][0]["statistics"]["videoCount"] }}
+            {{ channel_resource["items"][0]["statistics"]["videoCount"] }}
             </h3>
             <h4>Total number of views for the channel's 
-            {{ resource["items"][0]["statistics"]["videoCount"] }} videos: 
-            {{ resource["items"][0]["statistics"]["viewCount"] }}
+            {{ channel_resource["items"][0]["statistics"]["videoCount"] }} videos: 
+            {{ channel_resource["items"][0]["statistics"]["viewCount"] }}
             </h4>
         </div>
         <!-- Column 2 -->
         <div class="column">
         <!-- Content for column 2 -->
-            <h5>Total number of subs: 
-            {{ resource["items"][0]["statistics"]["subscriberCount"] }}
-            </h5>
+            <h4>Total number of subs: 
+            {{ channel_resource["items"][0]["statistics"]["subscriberCount"] }}
+            </h4>
+            <h4>LIVE status: 
+                {{ search_resource["items"][0]["snippet"]["liveBroadcastContent"] }}
+                </h4>
+            
+
         </div>
     </div>
     </body>        
