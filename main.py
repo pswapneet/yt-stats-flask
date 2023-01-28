@@ -9,9 +9,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def stats():
-    youtube = build('youtube', 'v3', developerKey=config.developer_key)
-    request = youtube.channels().list(part='snippet', \
-        id=config.channel_id)
+    youtube = build('youtube', 'v3', \
+        developerKey=config.developer_key)
+    request = youtube.channels().list(
+        part='snippet,statistics',
+        id=config.channel_id
+        )
     response = request.execute()
     return render_template('stats.html', resource=response)
 

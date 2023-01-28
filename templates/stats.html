@@ -3,6 +3,22 @@
 <head>
     <title>Youtube Stats</title>
 </head>
-    <h1>{{ resource["items"][0]["snippet"]["title"]  }}</h1>
-    <h2>{{ resource["items"][0]["snippet"]["description"] }}</h2>
+<body>
+    <div>
+        <h1>Title: {{ resource["items"][0]["snippet"]["title"]  }}</h1>
+        <h2>Description: {{ resource["items"][0]["snippet"]["description"] }}</h2>
+    </div>
+    <div>
+        <h3>Total number of uploaded videos on channel: 
+            {{ resource["items"][0]["statistics"]["videoCount"] }}
+        </h3>
+        <h4>Total number of views for the channel's 
+            {{ resource["items"][0]["statistics"]["videoCount"] }} videos: 
+            {{ resource["items"][0]["statistics"]["viewCount"] }}
+        </h4>
+        <h5>Total number of subscribers: 
+            {{ resource["items"][0]["statistics"]["subscriberCount"] }}
+        </h5>
+    </div>
+</body>        
 </html>
