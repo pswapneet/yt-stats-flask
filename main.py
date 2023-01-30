@@ -23,14 +23,53 @@ from isodate import parse_duration
 app = Flask(__name__, static_folder='static')
 
 @app.route("/", methods=['GET', 'POST'])
+
 def index():
     if request.method == 'POST':
-        channel_id = request.form.get('channel_id')
+        channel_input = request.form.get('channel_input')
+        input_type = request.form.get('input_type')
+        if input_type == 'channel_id':
+            channel_id = channel_input
+        elif input_type == 'username':
+            username = channel_input[1:]
+            url = f'https://www.googleapis.com/youtube/v3/channels?part=forUsername={username}&key={config.developer_key}'
+            response = requests.get(url)
+            data = json.loads(response.text)
+            usernamereq= data
+            return render_template('test.html', test1=usernamereq)
+        elif input_type == 'custom_url':
+            url = f'https://www.googleapis.com/youtube/v3/channels?part=id&url={channel_input}&key={config.developer_key}'
+            response = requests.get(url)
+            data = json.loads(response.text)
+            channel_id = data['items'][0]['id']
         return redirect(f'/stats/{channel_id}')
     return render_template('index.html')
 
+@app.route('/getjson', methods=['GET', 'POST'])
+
+@app.route('/getjson', methods=['GET', 'POST'])
+def getjson():
+    if request.method == 'POST':
+        channel_id_json= request.form.get('channel_id_json')
+        url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,contentDetails&id={channel_id_json}&key={config.developer_key}'
+        response = requests.get(url)
+        data = json.loads(response.text)
+        filename = f"{channel_id_json}.json"
+        response = filename(json.dumps(data, indent=4))
+        response.headers["Content-Disposition"] = "attachment; filename=" + filename
+        response.mimetype = 'application/json'
+        return response
+    # THIS is NOT right... 
+    # it needs to generate json.html 
+    # or output.json...
+    return render_template('getjson.html')
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 @app.route("/stats/<channel_id>")
-def stats_title(channel_id):
+def stats(channel_id):
     youtube = build('youtube', 'v3', developerKey=config.developer_key)
     channel_request = youtube.channels().list(
         part='snippet,statistics',

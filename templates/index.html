@@ -6,11 +6,57 @@
     href="{{ url_for('static', filename='css/styleindex.css') }}">
 </head>
 <body>
+    <header>
+        <nav>
+          <ul>
+            <li><a href="{{ url_for('index') }}">Get YouTube Stats</a></li>
+            <li><a href="{{ url_for('getjson') }}">Get JSON</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+          </ul>
+        </nav>
+      </header>
     <h1>Enter Your YouTube Channel ID</h1>
-    <form action="/" method="POST">
-      <input type="text" name="channel_id">
-      <input type="submit" value="Submit">
-    </form>
+   <!-- index.html -->
+   <form method="post" action="/">
+    <div class="form-group">
+      <input type="text" class="form-control" id="channel_input" name="channel_input" placeholder="Enter Channel ID, Username or Custom URL">
+    </div>
+    <div class="form-group">
+      <select class="form-control" id="input_type" name="input_type">
+        <option value="channel_id">Channel ID</option>
+        <option value="username">Username</option>
+        <option value="custom_url">Custom URL</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  
+
+<script>
+    const radioButtons = document.querySelectorAll('input[name="input_type"]');
+    const channelIdInput = document.querySelector('#channel_id_input');
+    const usernameInput = document.querySelector('#username_input');
+    const customUrlInput = document.querySelector('#custom_url_input');
+
+    radioButtons.forEach(button => {
+        button.addEventListener('change', () => {
+            if (button.value === 'channel_id') {
+                channelIdInput.style.display = 'block';
+                usernameInput.style.display = 'none';
+                customUrlInput.style.display = 'none';
+            } else if (button.value === 'username') {
+                channelIdInput.style.display = 'none';
+                usernameInput.style.display = 'block';
+                customUrlInput.style.display = 'none';
+            } else if (button.value === 'custom_url') {
+                channelIdInput.style.display = 'none';
+                usernameInput.style.display = 'none';
+                customUrlInput.style.display = 'block';
+            }
+        });
+    });
+</script>
+
       
 </body>
 
