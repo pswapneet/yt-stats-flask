@@ -9,6 +9,9 @@ from isodate import parse_duration
 
 app = Flask(__name__, static_folder='static')
 
+#working on alpha...
+# going to add a form 
+# for input channel_id
 @app.route("/")
 def stats_title():
 
