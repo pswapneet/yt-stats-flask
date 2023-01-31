@@ -9,9 +9,9 @@ from isodate import parse_duration
 
 app = Flask(__name__, static_folder='static')
 
-#working on alpha...
-# going to add a form 
-# for input channel_id
+#REVERTED (git checkout <commit hash> back to:
+# e0cc1abdd7b75cbc7bd375b8f9f6aa1102d987ce on ALPHA branch
+
 #import os
 from flask import Flask, flash, redirect, render_template, request, jsonify
 import config
