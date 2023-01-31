@@ -31,11 +31,14 @@ def index():
         input_type = request.form.get('input_type')
         if input_type == 'channel_id':
             channel_id = channel_input
+        #BELOW ELIF for USERNAME DOES NOT WORK
         elif input_type == 'username':
             username = channel_input[1:]
             url = f'https://www.googleapis.com/youtube/v3/channels?part=forUsername={username}&key={config.developer_key}'
             response = requests.get(url)
             data = json.loads(response.text)
+            # THERE IS NO, NOR SHALL THERE BE,
+            # A test.html FILE...
             usernamereq= data
             return render_template('test.html', test1=usernamereq)
         elif input_type == 'custom_url':
@@ -43,6 +46,12 @@ def index():
             response = requests.get(url)
             data = json.loads(response.text)
             channel_id = data['items'][0]['id']
+        #THE REPONSE FROM USERNAME AND CUSTOM_URL
+        #NEED TO BE THE CHANNEL_ID! SO...
+        # THE USERNAME AND URL INPUTS SHOULD BE
+        # BEFORE, YES, BEFORE THE CHANNEL ID IF
+        # BC HERE THE REDIRECT TO stats function
+        #WITH  channel id as argument
         return redirect(f'/stats/{channel_id}')
     return render_template('index.html')
 
