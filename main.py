@@ -1,14 +1,3 @@
-#import os
-from flask import Flask, flash, redirect, render_template, request, jsonify
-#from random import randint
-import config
-import json
-from googleapiclient.discovery import build
-import requests
-from isodate import parse_duration
-
-app = Flask(__name__, static_folder='static')
-
 #REVERTED (git checkout <commit hash> back to:
 # e0cc1abdd7b75cbc7bd375b8f9f6aa1102d987ce on ALPHA branch
 # PUBLISHED to CHARLEY
@@ -37,16 +26,9 @@ def index():
             url = f'https://www.googleapis.com/youtube/v3/channels?part=forUsername={username}&key={config.developer_key}'
             response = requests.get(url)
             data = json.loads(response.text)
-            # THERE IS NO, NOR SHALL THERE BE,
-            # A test.html FILE...
-            usernamereq= data
-            return render_template('test.html', test1=usernamereq)
-        elif input_type == 'custom_url':
-            url = f'https://www.googleapis.com/youtube/v3/channels?part=id&url={channel_input}&key={config.developer_key}'
-            response = requests.get(url)
-            data = json.loads(response.text)
-            channel_id = data['items'][0]['id']
-        #THE REPONSE FROM USERNAME AND CUSTOM_URL
+            # request above using username, get the channel id
+            channel_id = data[id]
+        #THE REPONSE FROM USERNAME AND CUSTOM_URL ZZZZ GET RID OF CUSTOM URL 
         #NEED TO BE THE CHANNEL_ID! SO...
         # THE USERNAME AND URL INPUTS SHOULD BE
         # BEFORE, YES, BEFORE THE CHANNEL ID IF
@@ -54,8 +36,6 @@ def index():
         #WITH  channel id as argument
         return redirect(f'/stats/{channel_id}')
     return render_template('index.html')
-
-@app.route('/getjson', methods=['GET', 'POST'])
 
 @app.route('/getjson', methods=['GET', 'POST'])
 def getjson():
