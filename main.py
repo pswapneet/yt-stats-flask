@@ -1,26 +1,31 @@
-#import os
+#FLASK APP with problems...
+#"The issue was that the request object from the 
+# flask library was being overwritten by 
+# the request object from the youtube API.
 from flask import Flask, flash, redirect, render_template, request, jsonify
-#from random import randint
+
+#STORE THE API KEY
 import config
-import json
+
+#YOUTUBE CLIENT API
 from googleapiclient.discovery import build
+
+#ALPHA release, working with both YT CLIENT API above and requests/json
 import requests
+import json
+
+#USED FOR PARSING video_duration
 from isodate import parse_duration
 
+# APP BELOW
+
+#THE CSS IS in /static/css
 app = Flask(__name__, static_folder='static')
 
-#working on alpha...
-# going to add a form 
-# for input channel_id
-#import os
-from flask import Flask, flash, redirect, render_template, request, jsonify
-import config
-import json
-from googleapiclient.discovery import build
-import requests
-from isodate import parse_duration
+#VARIABLE FOR THE YouTube Client API!
+youtube = build('youtube', 'v3', developerKey=config.developer_key)
 
-app = Flask(__name__, static_folder='static')
+# index.html
 
 @app.route("/", methods=['GET', 'POST'])
 
@@ -45,24 +50,21 @@ def index():
         return redirect(f'/stats/{channel_id}')
     return render_template('index.html')
 
-@app.route('/getjson', methods=['GET', 'POST'])
+# getjson.html
 
 @app.route('/getjson', methods=['GET', 'POST'])
 def getjson():
     if request.method == 'POST':
-        channel_id_json= request.form.get('channel_id_json')
-        url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,contentDetails&id={channel_id_json}&key={config.developer_key}'
-        response = requests.get(url)
-        data = json.loads(response.text)
-        filename = f"{channel_id_json}.json"
-        response = filename(json.dumps(data, indent=4))
-        response.headers["Content-Disposition"] = "attachment; filename=" + filename
-        response.mimetype = 'application/json'
-        return response
-    # THIS is NOT right... 
-    # it needs to generate json.html 
-    # or output.json...
+        getjson_id = request.form['channel_id']
+        youtube = build("youtube", "v3", developerKey=config.developer_key)
+        request = youtube.channels().list(
+            part="snippet,contentDetails,statistics,topicDetails",
+            id=getjson_id)
+        response = request.execute()
+        return render_template('json.html', data=response)
     return render_template('getjson.html')
+
+# about.html
 
 @app.route("/about")
 def about():
@@ -70,7 +72,7 @@ def about():
 
 @app.route("/stats/<channel_id>")
 def stats(channel_id):
-    youtube = build('youtube', 'v3', developerKey=config.developer_key)
+    #youtube = build('youtube', 'v3', developerKey=config.developer_key)
     channel_request = youtube.channels().list(
         part='snippet,statistics',
         id=channel_id)
@@ -97,6 +99,8 @@ def stats(channel_id):
         channel_resource=channel_response, \
         latest_video_duration=duration_string, \
         search_resource=search_response)
+
+#RUN THE APP BELOW
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
