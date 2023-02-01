@@ -25,9 +25,9 @@ def index():
             username = channel_input[1:]
             url = f'https://www.googleapis.com/youtube/v3/search?part=id&maxResults=1&q={username}&type=channel&key={config.developer_key}'
             response = requests.get(url)
-            data = json.loads(response.text)
+            dataSearchUser = json.loads(response.text)
             # request above using username, get the channel id
-            channel_id = data['items'][0]['id']['channelID']
+            channel_id = dataSearchUser['items'][0]['id']['channelId']
         #THE REPONSE FROM USERNAME AND CUSTOM_URL ZZZZ GET RID OF CUSTOM URL 
         #NEED TO BE THE CHANNEL_ID! SO...
         # THE USERNAME AND URL INPUTS SHOULD BE
