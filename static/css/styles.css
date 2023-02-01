@@ -34,5 +34,30 @@ h1, h2, h3, h4, h5 {
 .column {
     width: 50%;
   }
+
+  .selectedDiv {
+    background-color: blue;
+    color: white;
+    width: 85%;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 24px;
+  }
+  
+  #idFormSelected {
+    background-color: red;
+    color: yellow;
+  }
+  
+  #selectFormMenu {
+    width: 65%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .selectFormLinks {
+    font-size: 24px;
+    font-family: Verdana;
+  }  
   
   
