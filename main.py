@@ -23,11 +23,11 @@ def index():
         #BELOW ELIF for USERNAME DOES NOT WORK
         elif input_type == 'username':
             username = channel_input[1:]
-            url = f'https://www.googleapis.com/youtube/v3/channels?part=forUsername={username}&key={config.developer_key}'
+            url = f'https://www.googleapis.com/youtube/v3/search?part=id&maxResults=1&q={username}&type=channel&key={config.developer_key}'
             response = requests.get(url)
             data = json.loads(response.text)
             # request above using username, get the channel id
-            channel_id = data[id]
+            channel_id = data['items'][0]['id']['channelID']
         #THE REPONSE FROM USERNAME AND CUSTOM_URL ZZZZ GET RID OF CUSTOM URL 
         #NEED TO BE THE CHANNEL_ID! SO...
         # THE USERNAME AND URL INPUTS SHOULD BE
