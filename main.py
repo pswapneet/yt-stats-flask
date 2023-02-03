@@ -16,24 +16,17 @@ app = Flask(__name__, static_folder='static')
 
 def index():
     if request.method == 'POST':
-        channel_input = request.form.get('channel_input')
         input_type = request.form.get('input_type')
-        if input_type == 'channel_id':
-            channel_id = channel_input
-        #BELOW ELIF for USERNAME DOES NOT WORK
-        elif input_type == 'username':
-            username = channel_input[1:]
+        if input_type == 'username':
+            username = request.form.get('username')
+            username = username[1:]
             url = f'https://www.googleapis.com/youtube/v3/search?part=id&maxResults=1&q={username}&type=channel&key={config.developer_key}'
             response = requests.get(url)
             dataSearchUser = json.loads(response.text)
             # request above using username, get the channel id
             channel_id = dataSearchUser['items'][0]['id']['channelId']
-        #THE REPONSE FROM USERNAME AND CUSTOM_URL ZZZZ GET RID OF CUSTOM URL 
-        #NEED TO BE THE CHANNEL_ID! SO...
-        # THE USERNAME AND URL INPUTS SHOULD BE
-        # BEFORE, YES, BEFORE THE CHANNEL ID IF
-        # BC HERE THE REDIRECT TO stats function
-        #WITH  channel id as argument
+        elif input_type == 'channel_id':
+            channel_id = request.form.get('channel_id')
         return redirect(f'/stats/{channel_id}')
     return render_template('index.html')
 

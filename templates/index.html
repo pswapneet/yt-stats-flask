@@ -18,51 +18,54 @@
       </header>
     <h1>Enter Your YouTube Channel ID</h1>
    <!-- index.html -->
-   <form method="post" action="/">
-    <div class="form-group">
-      <input type="text" class="form-control" id="channel_input" name="channel_input" placeholder="Enter Channel ID or username">
-    </div>
-    <div class="form-group">
-      <select class="form-control" id="input_type" name="input_type">
-        <option value="channel_id">Channel ID</option>
-        <option value="username">Username</option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-  
-
-<script>
-    const radioButtons = document.querySelectorAll('input[name="input_type"]');
-    const channelIdInput = document.querySelector('#channel_id_input');
-    const usernameInput = document.querySelector('#username_input');
-
-    radioButtons.forEach(button => {
-        button.addEventListener('change', () => {
-            if (button.value === 'channel_id') {
-                channelIdInput.style.display = 'block';
-                usernameInput.style.display = 'none';
-            } else if (button.value === 'username') {
-                channelIdInput.style.display = 'none';
-                usernameInput.style.display = 'block';
-            } else if (button.value === 'custom_url') {
-                channelIdInput.style.display = 'none';
-                usernameInput.style.display = 'none';
-            }
-        });
-    });
-</script>
 
 <div id="selectFormMenu" class="selectFormLinks">
   <a href="#" onclick="showDiv('usernameSelected'); hideDiv('idFormSelected');">Username</a>
   <a href="#" onclick="showDiv('idFormSelected'); hideDiv('usernameSelected');">ID</a>
 </div>
+
 <div id="usernameSelected" class="selectedDiv">
-  <p>I am div2</p>
+  <form method="post">
+    <div class="form-group">
+      @<input type="text" class="form-control" id="username_input" name="username" placeholder="Enter username">
+    </div>
+    <input type="hidden" name="input_type" value="username">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 </div>
+
 <div id="idFormSelected" class="selectedDiv" style="display:none;">
-  <p>I am div3</p>
+  <form method="post">
+    <div class="form-group">
+      <input type="text" class="form-control" id="channel_id_input" name="channel_id" placeholder="Enter Channel ID">
+    </div>
+    <input type="hidden" name="input_type" value="channel_id">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 </div>
+
+
+<script>
+function submitUsernameForm() {
+  const form = document.querySelector("#usernameSelected form");
+  const input = document.querySelector("#username_input");
+  form.action = "/";
+  form.method = "post";
+  input.value = input.value;
+  form.submit();
+}
+
+function submitIdForm() {
+  const form = document.querySelector("#idFormSelected form");
+  const input = document.querySelector("#channel_id_input");
+  form.action = "/";
+  form.method = "post";
+  input.value = input.value;
+  form.submit();
+}
+</script>
+
+
       
 </body>
 
