@@ -24,6 +24,7 @@ def index():
             response = requests.get(url)
             dataSearchUser = json.loads(response.text)
             # request above using username, get the channel id
+            # from the search json object returned 
             channel_id = dataSearchUser['items'][0]['id']['channelId']
         elif input_type == 'channel_id':
             channel_id = request.form.get('channel_id')
