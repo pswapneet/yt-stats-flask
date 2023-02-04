@@ -3,8 +3,9 @@
 <head>
     <title>ytstat.com</title>
     <link rel="stylesheet" type="text/css" 
-    href="{{ url_for('static', filename='css/styles.css') }}">
+    href="{{ url_for('static', filename='css/layout.css') }}">
     <script src="{{ url_for('static', filename='js/layout.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/indexforms.js') }}"></script>
 </head>
 <body>
     <header>
@@ -16,24 +17,35 @@
           </ul>
         </nav>
       </header>
-    <h1>Enter Your YouTube Channel ID</h1>
-   <!-- index.html -->
+
+<div id="enterData">
+  <h2>Enter Your YouTube Channel ID or user name</h2>  
+  hello
+</div>
+
+<div id="serchContainer">
 
 <div id="selectFormMenu" class="selectFormLinks">
   <a href="#" onclick="showDiv('usernameSelected'); hideDiv('idFormSelected');">Username</a>
   <a href="#" onclick="showDiv('idFormSelected'); hideDiv('usernameSelected');">ID</a>
 </div>
 
-<div id="usernameSelected" class="selectedDiv">
+<div id="usernameSelected" class="selectedDiv" style="display:flex;">
   <form method="post">
     <div class="form-group">
-      @<input type="text" class="form-control" id="username_input" name="username" placeholder="Enter username">
+        <input type="text" class="form-control" id="username_input" name="username" placeholder="Enter username">
     </div>
     <input type="hidden" name="input_type" value="username">
+    <script>
+      document.getElementById("username_input").addEventListener("focus", function() {
+        if (this.value === "") {
+          this.value = "@";
+        }
+      });
+    </script>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
-
 <div id="idFormSelected" class="selectedDiv" style="display:none;">
   <form method="post">
     <div class="form-group">
@@ -44,29 +56,7 @@
   </form>
 </div>
 
+</div>
 
-<script>
-function submitUsernameForm() {
-  const form = document.querySelector("#usernameSelected form");
-  const input = document.querySelector("#username_input");
-  form.action = "/";
-  form.method = "post";
-  input.value = input.value;
-  form.submit();
-}
-
-function submitIdForm() {
-  const form = document.querySelector("#idFormSelected form");
-  const input = document.querySelector("#channel_id_input");
-  form.action = "/";
-  form.method = "post";
-  input.value = input.value;
-  form.submit();
-}
-</script>
-
-
-      
 </body>
-
 </html>
