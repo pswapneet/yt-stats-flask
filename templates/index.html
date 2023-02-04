@@ -19,8 +19,14 @@
    <!-- index.html -->
    <form method="post" action="/">
     <div class="form-group">
-      <input type="text" class="form-control" id="channel_input" name="channel_input" placeholder="Enter Channel ID, Username or Custom URL">
+        <input type="text" class="form-control" id="username_input" name="username" placeholder="Enter username">
     </div>
+    <input type="hidden" name="input_type" value="username">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+<div id="idFormSelected" class="selectedDiv" style="display:none;">
+  <form method="post">
     <div class="form-group">
       <select class="form-control" id="input_type" name="input_type">
         <option value="channel_id">Channel ID</option>
