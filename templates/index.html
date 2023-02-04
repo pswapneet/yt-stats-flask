@@ -33,16 +33,16 @@
 <div id="usernameSelected" class="selectedDiv" style="display:flex;">
   <form method="post">
     <div class="form-group">
-        <input type="text" class="form-control" id="username_input" name="username" placeholder="Enter username">
-        <script>
-          document.getElementById("username_input").addEventListener("focus", function() {
-            if (this.value === "") {
-              this.value = "@";
-            }
-          });
-        </script>
+      @<input type="text" class="form-control" id="username_input" name="username" placeholder="Enter username">
     </div>
     <input type="hidden" name="input_type" value="username">
+    <script>
+      document.getElementById("username_input").addEventListener("focus", function() {
+        if (this.value === "") {
+          this.value = "@";
+        }
+      });
+    </script>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
