@@ -8,6 +8,9 @@ from isodate import parse_duration
 
 app = Flask(__name__, static_folder='static')
 
+def add_commas(number):
+    return '{:,}'.format(number)
+
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -63,10 +66,12 @@ def stats(channel_id):
     statsChannel = channel_response
 
     totalviews = int(statsChannel["items"][0]["statistics"]["viewCount"])
+    
     views_string = str(totalviews)
     if len(views_string) >= 3:
         #the number gets backwards...
-        views_string = ",".join([views_string[max(0, i-3):i] for i in range(len(views_string), 0, -3)])[::-1]
+        views_string_bs = ",".join([views_string[max(0, i-3):i] for i in range(len(views_string), 0, -3)])[::-1]
+        views_string = (add_commas(totalviews))
 
     #get the video id which is used in next api req
     url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={channel_id}&\
@@ -93,6 +98,7 @@ def stats(channel_id):
         channel_resource=channel_response, \
         latest_video_duration=duration_string, \
         search_resource=search_response, \
+        totalviewsbs=views_string_bs,
         totalviews=views_string)
         
 @app.route('/getjson', methods=['GET', 'POST'])
