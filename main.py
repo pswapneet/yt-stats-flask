@@ -65,13 +65,22 @@ def stats(channel_id):
     channel_response = channel_request.execute()
     statsChannel = channel_response
 
+    #add commas to some stats
+    #views
     totalviews = int(statsChannel["items"][0]["statistics"]["viewCount"])
-    
     views_string = str(totalviews)
     if len(views_string) >= 3:
-        #the number gets backwards...
-        views_string_bs = ",".join([views_string[max(0, i-3):i] for i in range(len(views_string), 0, -3)])[::-1]
         views_string = (add_commas(totalviews))
+    #subs
+    totalsubs = int(statsChannel["items"][0]["statistics"]["subscriberCount"])
+    subs_string = str(totalsubs)
+    if len(subs_string) >= 3:
+        subs_string = (add_commas(totalsubs))
+    #videos
+    total_videos = int(statsChannel["items"][0]["statistics"]["videoCount"])
+    video_string = str(total_videos)
+    if len(video_string) >= 3:
+        video_string = (add_commas(total_videos))
 
     #get the video id which is used in next api req
     url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={channel_id}&\
@@ -98,8 +107,9 @@ def stats(channel_id):
         channel_resource=channel_response, \
         latest_video_duration=duration_string, \
         search_resource=search_response, \
-        totalviewsbs=views_string_bs,
-        totalviews=views_string)
+        totalsubs=subs_string,
+        totalviews=views_string,
+        totalvideos=video_string)
         
 @app.route('/getjson', methods=['GET', 'POST'])
 

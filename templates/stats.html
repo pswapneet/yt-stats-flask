@@ -26,21 +26,17 @@
         <div class="column">
         <!-- Content for column 1 -->
             <h3>Total number of uploaded videos on channel: 
-            {{ channel_resource["items"][0]["statistics"]["videoCount"] }}
+            {{ totalvideos }}
             </h3>
             <h4>Total number of views for the channel's 
-            {{ channel_resource["items"][0]["statistics"]["videoCount"] }} videos: 
-            {{ channel_resource["items"][0]["statistics"]["viewCount"] }} raw <br>
-            {{ totalviews }} add comas function formated <br>
-            {{ totalviewsbs }} the weird formatting
-
+            {{ totalvideos }} videos: {{ totalviews }}<br>
             </h4>
         </div>
         <!-- Column 2 -->
         <div class="column">
         <!-- Content for column 2 -->
             <h4>Total number of subs: 
-            {{ channel_resource["items"][0]["statistics"]["subscriberCount"] }}
+            {{ totalsubs }}
             </h4>
             <h4>LIVE status: 
                 {{ search_resource["items"][0]["snippet"]["liveBroadcastContent"] }}
