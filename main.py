@@ -1,5 +1,6 @@
 #import os
 from flask import Flask, flash, redirect, render_template, request, jsonify
+from flask_bootstrap import Bootstrap
 import config
 import json
 from googleapiclient.discovery import build
@@ -7,6 +8,7 @@ import requests
 from isodate import parse_duration
 
 app = Flask(__name__, static_folder='static')
+Bootstrap(app)
 
 def add_commas(number):
     return '{:,}'.format(number)
