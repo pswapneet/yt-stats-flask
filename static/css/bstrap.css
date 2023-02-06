@@ -1,22 +1,40 @@
-h6 {
-    color: blueviolet;
+h2 {
+  font-size: 24px;
+  color: gray;
+  margin-top: 4px;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
 }
-.navbar-brand {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .navbar-default {
-    background-color: #f8f8f8;
-    border-color: #e7e7e7;
-  }
-  
-  .navbar-default .navbar-nav > li > a {
-    color: #333;
-  }
-  
-  .navbar-default .navbar-nav > li > a:hover {
-    color: #fff;
-    background-color: #333;
-  }  
+
+h6 {
+    color: blueviolet; }
+
+#searchContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      position: relative;
+}
+
+.selectedDiv {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px 0;
+  margin-top: 0;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 400px;
+  max-width: 500px;
+  margin: 20px 0;
+  margin-top: 0;
+}

@@ -1,3 +1,11 @@
+function showDiv(divId) {
+  document.getElementById(divId).style.display = "flex";
+}
+
+function hideDiv(divId) {
+  document.getElementById(divId).style.display = "none";
+}
+
 function submitUsernameForm() {
   const form = document.querySelector("#usernameSelected form");
   const input = document.querySelector("#username_input");

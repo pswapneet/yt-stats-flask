@@ -14,52 +14,40 @@ def add_commas(number):
     return '{:,}'.format(number)
 
 @app.route("/", methods=['GET', 'POST'])
-def index():
+def access_forms():
     if request.method == 'POST':
-        
-        #username or channel_id form
         input_type = request.form.get('input_type')
-
-        #username input
         if input_type == 'username':
             username = request.form.get('username')
-            username = username[1:]
-            url = f'https://www.googleapis.com/youtube/v3/search?part=id&maxResults=1&q={username}\
-                &type=channel&key={config.developer_key}'
-            response = requests.get(url)
-            dataSearchUser = json.loads(response.text)
-
-            #Check if username response is OK 
-            #i.e. items is NOT empty
-            if dataSearchUser['items']:
-                channel_id = dataSearchUser['items'][0]['id']['channelId']
-            #items is empty
-            else:
-                return render_template('name_error.html')
-        
-        #channel_id input
+            return process_user(username)
         elif input_type == 'channel_id':
             channel_id = request.form.get('channel_id')
-            url = f'https://www.googleapis.com/youtube/v3/search?part=id&channelId={channel_id}\
-                &key={config.developer_key}'
-            response = requests.get(url)
-            dataSearchID = json.loads(response.text)
+            return process_id(channel_id)
+    else:
+        return render_template('index.html')
 
-            #check items
-            if dataSearchID['items']:
-                channel_id = dataSearchID['items'][0]['id']['channelId']    
-            else:
-                return render_template('id_error.html')
+def process_id(channel_id):
+    url = f'https://www.googleapis.com/youtube/v3/search?part=id&channelId={channel_id}&key={config.developer_key}'
+    response = requests.get(url)
+    data_search_id = json.loads(response.text)
+    if data_search_id['items']:
+        channel_id = data_search_id['items'][0]['id']['channelId']    
+    else:
+        return render_template('id_error.html')
+    return redirect(f'/stats/{channel_id}')
 
-        #variable channel_id passed to stats         
-        return redirect(f'/stats/{channel_id}')
-
-    return render_template('index.html')
+def process_user(username):
+    url = f'https://www.googleapis.com/youtube/v3/search?part=id&maxResults=1&q={username}&type=channel&key={config.developer_key}'
+    response = requests.get(url)
+    data_search_user = json.loads(response.text)
+    if data_search_user['items']:
+        channel_id = data_search_user['items'][0]['id']['channelId']
+    else:
+        return render_template('name_error.html')
+    return redirect(f'/stats/{channel_id}')
 
 @app.route("/stats/<channel_id>")
 def stats(channel_id):
-
-    #get some stats with the youtube python client library
     youtube = build('youtube', 'v3', developerKey=config.developer_key)
     channel_request = youtube.channels().list(
         part='snippet,statistics',
@@ -68,16 +56,19 @@ def stats(channel_id):
     statsChannel = channel_response
 
     #add commas to some stats
+
     #views
     totalviews = int(statsChannel["items"][0]["statistics"]["viewCount"])
     views_string = str(totalviews)
     if len(views_string) >= 3:
         views_string = (add_commas(totalviews))
+
     #subs
     totalsubs = int(statsChannel["items"][0]["statistics"]["subscriberCount"])
     subs_string = str(totalsubs)
     if len(subs_string) >= 3:
         subs_string = (add_commas(totalsubs))
+
     #videos
     total_videos = int(statsChannel["items"][0]["statistics"]["videoCount"])
     video_string = str(total_videos)
@@ -112,10 +103,22 @@ def stats(channel_id):
         totalsubs=subs_string,
         totalviews=views_string,
         totalvideos=video_string)
-        
-@app.route('/getjson', methods=['GET', 'POST'])
 
 #work in progress below
+
+@app.route("/stats/<channel_id>", methods=['GET', 'POST'])
+def access_forms_on_stats_page(channel_id):
+    if request.method == 'POST':
+        input_type = request.form.get('input_type')
+        if input_type == 'username':
+            username = request.form.get('username')
+            return process_user(username)
+        elif input_type == 'channel_id':
+            channel_id = request.form.get('channel_id')
+            return process_id(channel_id)
+    else:
+        return render_template('stats.html', channel_id=channel_id)
+
 def getjson():
     if request.method == 'POST':
         channel_id_json= request.form.get('channel_id_json')

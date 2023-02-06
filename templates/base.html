@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   <!-- Link to bootstrap CSS file -->
@@ -11,13 +11,16 @@
   <!-- Link to your custom CSS file -->
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bstrap.css') }}">
 
+  {% block customcss %}{% endblock %}
+
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+
   {% include "header.html" %}
-  <main>
-    {% block content %}{% endblock %}
-  </main>
+
+  {% block content %}{% endblock %}
+
   {% include "footer.html" %}
 
   <!-- Link to bootstrap JavaScript file -->

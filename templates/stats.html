@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Youtube Stats</title>
-    <link rel="stylesheet" type="text/css" 
-    href="{{ url_for('static', filename='css/statstyle.css') }}">
-</head>
-    <div class="header">
-        <h1>Title: {{ channel_resource["items"][0]["snippet"]["title"] }}</h1>
-    </div>
+{% extends "base.html" %}
+
+{% block title %}ytstat.com - {{ channel_resource["items"][0]["snippet"]["title"] }}{% endblock %}
+
+{% block customcss %} 
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/statstyle.css') }}">
+{% endblock %}
+
+{% block content %}
     <div class="recentvid">
         <p>Most recent video published at: 
             {{ search_resource["items"][0]["snippet"]["publishedAt"] }} 
@@ -45,5 +44,4 @@
 
         </div>
     </div>
-    </body>        
-</html>
+    {% endblock %}
