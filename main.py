@@ -27,17 +27,17 @@ def access_forms():
         return render_template('index.html')
 
 def process_id(channel_id):
-    url = f'https://www.googleapis.com/youtube/v3/search?part=id&channelId={channel_id}&key={config.developer_key}'
+    url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet&id={channel_id}&key={config.developer_key}'
     response = requests.get(url)
     data_search_id = json.loads(response.text)
     if data_search_id['items']:
-        channel_id = data_search_id['items'][0]['id']['channelId']    
+        channel_id = data_search_id['items'][0]['id']    
     else:
         return render_template('id_error.html')
     return redirect(f'/stats/{channel_id}')
 
 def process_user(username):
-    url = f'https://www.googleapis.com/youtube/v3/search?part=id&maxResults=1&q={username}&type=channel&key={config.developer_key}'
+    url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q={username}&type=channel&key={config.developer_key}'
     response = requests.get(url)
     data_search_user = json.loads(response.text)
     if data_search_user['items']:
