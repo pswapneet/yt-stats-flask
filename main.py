@@ -7,15 +7,18 @@ from googleapiclient.discovery import build
 import requests
 from isodate import parse_duration
 import urllib.parse
+#from flask_wtf import FlaskForm
+#from wtforms import StringField
+#from wtforms.validators import DataRequire
 
 app = Flask(__name__, static_folder='static')
+#app.config['SECRET_KEY'] = '1234asdf'
 Bootstrap(app)
 
 def add_commas(number):
     return '{:,}'.format(number)
 
 @app.route("/", methods=['GET', 'POST'])
-
 def access_forms():
     if request.method == 'POST':
         input_type = request.form.get('input_type')
@@ -27,16 +30,16 @@ def access_forms():
             return process_id(channel_id)
     else:
         return render_template('index.html')
-
+        
 def process_id(channel_id):
-    url = f'https://www.googleapis.com/youtube/v3/search?part=id&channelId={urllib.parse.quote(channel_id)}&key={config.developer_key}'
+    url = f'https://www.googleapis.com/youtube/v3/search?part=id&channelId={channel_id}&key={config.developer_key}'
     response = requests.get(url)
     data_search_id = json.loads(response.text)
     if data_search_id['items']:
         channel_id = data_search_id['items'][0]['id']['channelId']    
     else:
         return render_template('id_error.html')
-    return redirect(f'/stats/{urllib.parse.quote(channel_id)}')
+    return redirect(f'/stats/{channel_id}')
 
 def process_user(username):
     url = f'https://www.googleapis.com/youtube/v3/search?part=id&maxResults=1&q={username}&type=channel&key={config.developer_key}'
@@ -46,8 +49,7 @@ def process_user(username):
         channel_id = data_search_user['items'][0]['id']['channelId']
     else:
         return render_template('name_error.html')
-    return redirect(f'/stats/{urllib.parse.quote(channel_id)}')
-
+    return redirect(f'/stats/{channel_id}')
 
 @app.route("/stats/<channel_id>")
 def stats(channel_id):
