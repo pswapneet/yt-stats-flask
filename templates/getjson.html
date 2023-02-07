@@ -4,8 +4,12 @@
   </head>
   <body>
     <h1>Get the JSON</h1>
-    <form action="/getjson" method="post">
-      <input type="text" name="channel_id_json" id="channel_id_json" placeholder="Enter YouTube Channel ID">
+    <h2>the form below is a wtf form</h2>
+    
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      {{ form.input_type.label }} {{ form.input_type }}
+      {{ form.input_value.label }} {{ form.input_value(placeholder='Enter Value') }}
       <input type="submit" value="Submit">
     </form>
     

@@ -6,17 +6,24 @@ import json
 from googleapiclient.discovery import build
 import requests
 from isodate import parse_duration
-import urllib.parse
-#from flask_wtf import FlaskForm
-#from wtforms import StringField
-#from wtforms.validators import DataRequire
+#import urllib.parse
+from flask_wtf import FlaskForm
+from wtforms import StringField, RadioField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__, static_folder='static')
-#app.config['SECRET_KEY'] = '1234asdf'
+app.config['SECRET_KEY'] = '1234asdf'
 Bootstrap(app)
 
 def add_commas(number):
     return '{:,}'.format(number)
+
+class searchForm(FlaskForm):
+    input_type = RadioField('Input Type', choices=[('username', 'Username'), ('id', 'ID')], validators=[DataRequired()])
+    input_value = StringField('Input Value', validators=[DataRequired()])
+
+
+#oldforms
 
 @app.route("/", methods=['GET', 'POST'])
 def access_forms():
@@ -24,16 +31,36 @@ def access_forms():
         input_type = request.form.get('input_type')
         if input_type == 'username':
             username = request.form.get('username')
-            return process_user(username)
+            process_user(username)
         elif input_type == 'channel_id':
             channel_id = request.form.get('channel_id')
-            return process_id(channel_id)
+            process_id(channel_id)
     else:
         return render_template('index.html')
-        
+#THE v3/search with key b8 error 403... maybe that why it didnt work.... push and revert to old shit
+#new form
+
+@app.route("/getjson", methods=['GET', 'POST'])
+def input_form():
+    form = searchForm()
+    if form.validate_on_submit():
+        input_type = form.input_type.data
+        input_value = form.input_value.data
+        if input_type == 'id':
+            wtfurl = f'https://www.googleapis.com/youtube/v3/search?part=id&channelId={input_value}&key={config.developer_key}'
+            wtfresponse = requests.get(wtfurl)
+            wtfdata = json.loads(wtfresponse)
+            return render_template('json.html', wtf=wtfdata)
+        #    process_id(input_value)
+        elif input_type == 'username':
+             process_user(input_value)
+        #    #JUST BUILD IN THE JSON SHIT HERE MAYBE IDK GOTTA CHECK THE JSON BS RESPONSE NPONSENSE BSSSSSSSS FUCKCKCCCDG
+    return render_template('getjson.html', form=form)
+
 def process_id(channel_id):
     url = f'https://www.googleapis.com/youtube/v3/search?part=id&channelId={channel_id}&key={config.developer_key}'
     response = requests.get(url)
+    #convert to python list or whatever why .text ????
     data_search_id = json.loads(response.text)
     if data_search_id['items']:
         channel_id = data_search_id['items'][0]['id']['channelId']    
@@ -123,7 +150,8 @@ def access_forms_on_stats_page(channel_id):
         return render_template('stats.html', channel_id=channel_id)
 
 #work in progress below
-def getjson():
+
+def getjsonold():
     if request.method == 'POST':
         channel_id_json= request.form.get('channel_id_json')
         url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,contentDetails&id={channel_id_json}&key={config.developer_key}'
@@ -141,4 +169,4 @@ def about():
     return render_template("about.html")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
