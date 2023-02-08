@@ -1,62 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>ytstat.com</title>
-    <link rel="stylesheet" type="text/css" 
-    href="{{ url_for('static', filename='css/layout.css') }}">
-    <script src="{{ url_for('static', filename='js/layout.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/indexforms.js') }}"></script>
-</head>
-<body>
-    <header>
-        <nav>
-          <ul>
-            <li><a href="{{ url_for('index') }}">Get YouTube Stats</a></li>
-            <li><a href="{{ url_for('getjson') }}">Get JSON</a></li>
-            <li><a href="{{ url_for('about') }}">About</a></li>
-          </ul>
-        </nav>
-      </header>
+{% extends "base.html" %}
 
-<div id="enterData">
-  <h2>Enter Your YouTube Channel ID or user name</h2>  
-  hello
-</div>
-<h1>no channel found with that name</h1>
-<div id="serchContainer">
+{% block title %}ytstat.com | channel not found{% endblock %}
 
-<div id="selectFormMenu" class="selectFormLinks">
-  <a href="#" onclick="showDiv('usernameSelected'); hideDiv('idFormSelected');">Username</a>
-  <a href="#" onclick="showDiv('idFormSelected'); hideDiv('usernameSelected');">ID</a>
-</div>
+{% block content %}
 
-<div id="usernameSelected" class="selectedDiv" style="display:flex;">
-  <form method="post">
-    <div class="form-group">
-      <input type="text" class="form-control" id="username_input" name="username" placeholder="Enter username">
-    </div>
-    <input type="hidden" name="input_type" value="username">
-    <script>
-      document.getElementById("username_input").addEventListener("focus", function() {
-        if (this.value === "") {
-          this.value = "@";
-        }
-      });
-    </script>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div>
-<div id="idFormSelected" class="selectedDiv" style="display:none;">
-  <form method="post">
-    <div class="form-group">
-      <input type="text" class="form-control" id="channel_id_input" name="channel_id" placeholder="Enter Channel ID">
-    </div>
-    <input type="hidden" name="input_type" value="channel_id">
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div>
-
-</div>
-
-</body>
-</html>
+<p> no channel found with that @username</p>
+  
+{% endblock %}

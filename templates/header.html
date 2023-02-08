@@ -8,7 +8,7 @@
 
 
   
-    <form class="navbar-form navbar-left" id="usernameSelected" method="post">
+    <form class="navbar-form navbar-left" id="usernameSelected" method="post" onsubmit="return validateUsernameForm()">
 
 <h2>Username to the left and id to the right</h2>      
         <div class="form-group" style="display: flex; align-items: center;">
@@ -20,7 +20,7 @@
         </div>
       </form>
 
-        <form class="navbar-form navbar-left" id="idFormSelected" method="post">
+        <form class="navbar-form navbar-left" id="idFormSelected" method="post" onsubmit="return validateIdForm()">
         <div id="idFormSelected" style="display: flex;">
         
         <input type="text" class="form-control" id="channel_id_input" name="channel_id" placeholder="Enter Channel ID">
@@ -41,3 +41,22 @@
     }
   });
 </script>
+<script>
+  function validateUsernameForm() {
+    const input = document.querySelector("#username_input");
+    if (input.value.length < 1) {
+      alert("Error: A minimum of 1 character must be inputted");
+      return false;
+    }
+    return true;
+  }
+  
+  function validateIdForm() {
+    const input = document.querySelector("#channel_id_input");
+    if (input.value.length !== 24) {
+      alert("Error: The input must be exactly 24 characters");
+      return false;
+    }
+    return true;
+  }
+  </script>

@@ -34,15 +34,15 @@ def process_id(channel_id):
         if response.status_code == 403:
             continue
         data_search_id = json.loads(response.text)
-        if data_search_id['items']:
+        if "items" in data_search_id and data_search_id['items']:
             channel_id = data_search_id['items'][0]['id']
             break
-        #this does not work, server error
-        #instead of id_error.html
-        else:
-            return render_template('id_error.html')
-    else:
+
+    if "items" not in data_search_id or not data_search_id['items']:
+        return render_template('id_error.html')
+    elif response.status_code == 403:
         return render_template('403.html')
+
     return redirect(f'/stats/{channel_id}')
 
 def process_user(username):
@@ -55,8 +55,6 @@ def process_user(username):
         if data_search_user['items']:
             channel_id = data_search_user['items'][0]['id']['channelId']
             break
-        #this does not work, server error
-        #instead of name_error.html
         else:
             return render_template('name_error.html')
     else: 
