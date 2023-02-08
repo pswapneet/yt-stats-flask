@@ -1,14 +1,24 @@
-#import os
 from flask import Flask, flash, redirect, render_template, request, jsonify
 from flask_bootstrap import Bootstrap
 import config
 import json
-from googleapiclient.discovery import build
 import requests
-from isodate import parse_duration
+#from isodate import parse_duration
+import logging
+
+# Configure logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler('app.log')
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 app = Flask(__name__, static_folder='static')
 Bootstrap(app)
+
+app.logger.setLevel(logging.DEBUG)
 
 def add_commas(number):
     return '{:,}'.format(number)
@@ -26,86 +36,6 @@ def access_forms():
     else:
         return render_template('index.html')
 
-def process_id(channel_id):
-    url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet&id={channel_id}&key={config.developer_key}'
-    response = requests.get(url)
-    data_search_id = json.loads(response.text)
-    if data_search_id['items']:
-        channel_id = data_search_id['items'][0]['id']    
-    else:
-        return render_template('id_error.html')
-    return redirect(f'/stats/{channel_id}')
-
-def process_user(username):
-    url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q={username}&type=channel&key={config.developer_key}'
-    response = requests.get(url)
-    data_search_user = json.loads(response.text)
-    if data_search_user['items']:
-        channel_id = data_search_user['items'][0]['id']['channelId']
-    else:
-        return render_template('name_error.html')
-    return redirect(f'/stats/{channel_id}')
-
-@app.route("/stats/<channel_id>")
-def stats(channel_id):
-    youtube = build('youtube', 'v3', developerKey=config.developer_key)
-    channel_request = youtube.channels().list(
-        part='snippet,statistics',
-        id=channel_id)
-    channel_response = channel_request.execute()
-    statsChannel = channel_response
-
-    #add commas to some stats
-
-    #views
-    totalviews = int(statsChannel["items"][0]["statistics"]["viewCount"])
-    views_string = str(totalviews)
-    if len(views_string) >= 3:
-        views_string = (add_commas(totalviews))
-
-    #subs
-    totalsubs = int(statsChannel["items"][0]["statistics"]["subscriberCount"])
-    subs_string = str(totalsubs)
-    if len(subs_string) >= 3:
-        subs_string = (add_commas(totalsubs))
-
-    #videos
-    total_videos = int(statsChannel["items"][0]["statistics"]["videoCount"])
-    video_string = str(total_videos)
-    if len(video_string) >= 3:
-        video_string = (add_commas(total_videos))
-
-    #get the video id which is used in next api req
-    url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={channel_id}&\
-        maxResults=1&order=date&type=video&key={config.developer_key}'
-    response = requests.get(url)
-    search_response = json.loads(response.text)
-    video_id = search_response['items'][0]['id']['videoId']
-
-    #video_id from search_response (latest video)
-    url = f'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id={video_id}&key={config.developer_key}'
-    response = requests.get(url)
-    dataLatest = json.loads(response.text)
-
-    #format duration latest video
-    video_duration = dataLatest['items'][0]['contentDetails']['duration']
-    parsed_duration = parse_duration(video_duration)
-    hours = parsed_duration.seconds // 3600
-    minutes = (parsed_duration.seconds % 3600) // 60
-    seconds = parsed_duration.seconds % 60
-
-    duration_string = f"{hours} hours, {minutes} minutes, {seconds} seconds"
-
-    return render_template('stats.html', \
-        channel_resource=channel_response, \
-        latest_video_duration=duration_string, \
-        search_resource=search_response, \
-        totalsubs=subs_string,
-        totalviews=views_string,
-        totalvideos=video_string)
-
-#work in progress below
-
 @app.route("/stats/<channel_id>", methods=['GET', 'POST'])
 def access_forms_on_stats_page(channel_id):
     if request.method == 'POST':
@@ -117,24 +47,56 @@ def access_forms_on_stats_page(channel_id):
             channel_id = request.form.get('channel_id')
             return process_id(channel_id)
     else:
-        return render_template('stats.html', channel_id=channel_id)
+        #THIS IS ALWAYS RUN...SO THERE IS A FUNDAMENTAL FLAW SOMEWHERE BEFORE.......
+        return render_template('ALWAYS_RESULT_OF_SUBMIT.html', channel_id=channel_id)
 
-def getjson():
-    if request.method == 'POST':
-        channel_id_json= request.form.get('channel_id_json')
-        url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,contentDetails&id={channel_id_json}&key={config.developer_key}'
-        response = requests.get(url)
-        data = json.loads(response.text)
-        filename = f"{channel_id_json}.json"
-        response = filename(json.dumps(data, indent=4))
-        response.headers["Content-Disposition"] = "attachment; filename=" + filename
-        response.mimetype = 'application/json'
-        return response
-    return render_template('getjson.html')
+#API request function
+#if 403 key1, try key2 etc
+api_keys = config.developer_keys
+def make_api_request(url, keys):
+    for key in keys:
+        full_url = f'{url}&key={key}'
+        response = requests.get(full_url)
+        if response.status_code != 403:
+            return response
+    return None
 
-@app.route("/about")
-def about():
-    return render_template("about.html")
+def process_id(channel_id):
+    url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet&id={channel_id}'
+    response = make_api_request(url, api_keys)
+    if response is None:
+        return render_template('403.html')
+    data_search_id = json.loads(response.text)
+    if data_search_id['items']:
+        channel_id = data_search_id['items'][0]['id']
+    else:
+        return render_template('id_error.html')
+    return redirect(f'/stats/{channel_id}')
+
+def process_user(username):
+    url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q={username}&type=channel'
+    response = make_api_request(url, api_keys)
+    if response is None:
+        return render_template('403.html')
+    data_search_user = json.loads(response.text)
+    if data_search_user['items']:
+        channel_id = data_search_user['items'][0]['id']['channelId']
+    else:
+        return render_template('name_error.html')
+    return redirect(f'/stats/{channel_id}')
+
+@app.route("/stats/<channel_id>")
+def stats(channel_id):
+    logger.debug(f"Running stats function for channel ID: {channel_id}") 
+    url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet%2Cstatistics&id={channel_id}&key=AIzaSyAPhsJEvl3MaMFj7OE1EqsArdpueMM2m58'
+    response = requests.get(url)
+    app.logger.debug("Response from API request: %s", response)
+    channel_response = json.loads(response.text)
+    if channel_response['items']:
+        stats = channel_response
+    else:
+        return render_template('name_error.html')
+    return render_template('stats.html', stats=stats)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
