@@ -103,17 +103,31 @@ def stats(channel_id):
     if len(video_string) >= 3:
         video_string = (add_commas(total_videos))
 
+    #THIS SHOULD NOT BE A NECESARY REQUEST SINCE I ALREADY HAVE MADE A SEARCH REQUEST IN 
     #get the video id which is used in next api req
-    url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={channel_id}&\
-        maxResults=1&order=date&type=video&key=AIzaSyAanEGUm3ycsI8c9HGb4klCpy9qEl9xBog'
-    response = requests.get(url)
-    search_response = json.loads(response.text)
-    video_id = search_response['items'][0]['id']['videoId']
+    # no bc search is for usrname not id so do again
+    for key in api_keys:
+        url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={channel_id}&\
+        maxResults=1&order=date&type=video&key={key}'
+        response = requests.get(url)
+        if response.status_code == 403:
+            continue
+        search_response = json.loads(response.text)
+        video_id = search_response['items'][0]['id']['videoId']
+        break
+    else:
+        return render_template('403.html')
 
     #video_id from search_response (latest video)
-    url = f'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id={video_id}&key=AIzaSyAanEGUm3ycsI8c9HGb4klCpy9qEl9xBog'
-    response = requests.get(url)
-    dataLatest = json.loads(response.text)
+    for key in api_keys:
+        url = f'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id={video_id}&key={key}'
+        response = requests.get(url)
+        if response.status_code == 403:
+            continue
+        dataLatest = json.loads(response.text)
+        break
+    else:
+        return render_template('403.html')
 
     #format duration latest video
     video_duration = dataLatest['items'][0]['contentDetails']['duration']
