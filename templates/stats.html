@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}ytstat.com - {{ channel_resource["items"][0]["snippet"]["title"] }}{% endblock %}
+{% block title %}ytstat.com | {{ title }}{% endblock %}
 
 {% block customcss %} 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/statstyle.css') }}">
 {% endblock %}
 
 {% block content %}
+<h1> {{ title }}</h1>
     <div class="recentvid">
         <p>Most recent video published at: 
             {{ search_resource["items"][0]["snippet"]["publishedAt"] }} 
@@ -18,7 +19,7 @@
         </p>  
     </div>
     <div class="disc">
-        <h2>Description: {{ channel_resource["items"][0]["snippet"]["description"] }}</h2>
+        <h2>Description: {{ description }}</h2>
     </div>
     <div class="container">
         <!-- Column 1 -->

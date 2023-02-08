@@ -53,6 +53,9 @@ def stats(channel_id):
         id=channel_id)
     channel_response = channel_request.execute()
     statsChannel = channel_response
+    infoChannel = channel_response['items'][0]['snippet']
+    title = infoChannel['title']
+    description = infoChannel['description']
 
     #add commas to some stats
 
@@ -96,7 +99,8 @@ def stats(channel_id):
     duration_string = f"{hours} hours, {minutes} minutes, {seconds} seconds"
 
     return render_template('stats.html', \
-        channel_resource=channel_response, \
+        title=title, \
+        description=description, \
         latest_video_duration=duration_string, \
         search_resource=search_response, \
         totalsubs=subs_string,
