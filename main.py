@@ -37,6 +37,8 @@ def process_id(channel_id):
         if data_search_id['items']:
             channel_id = data_search_id['items'][0]['id']
             break
+        #this does not work, server error
+        #instead of id_error.html
         else:
             return render_template('id_error.html')
     else:
@@ -53,6 +55,8 @@ def process_user(username):
         if data_search_user['items']:
             channel_id = data_search_user['items'][0]['id']['channelId']
             break
+        #this does not work, server error
+        #instead of name_error.html
         else:
             return render_template('name_error.html')
     else: 
@@ -61,12 +65,19 @@ def process_user(username):
 
 @app.route("/stats/<channel_id>")
 def stats(channel_id):
-    youtube = build('youtube', 'v3', developerKey='AIzaSyAanEGUm3ycsI8c9HGb4klCpy9qEl9xBog')
-    channel_request = youtube.channels().list(
-        part='snippet,statistics',
-        id=channel_id)
-    channel_response = channel_request.execute()
-    statsChannel = channel_response
+    for key in api_keys:
+        youtube = build('youtube', 'v3', developerKey=key)
+        channel_request = youtube.channels().list(
+            part='snippet,statistics',
+            id=channel_id)
+        channel_response = channel_request.execute()
+        if channel_response.get('error'):
+            continue
+        else:
+            statsChannel = channel_response
+            break
+    else:
+        return render_template('403.html')
 
     #channel info
     infoChannel = channel_response['items'][0]['snippet']
