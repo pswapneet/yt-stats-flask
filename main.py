@@ -2,9 +2,10 @@ from flask import Flask, flash, redirect, render_template, request, jsonify
 from flask_bootstrap import Bootstrap
 import config
 import json
-from googleapiclient.discovery import build
+#from googleapiclient.discovery import build
 import requests
 from isodate import parse_duration
+import logging
 
 app = Flask(__name__, static_folder='static')
 Bootstrap(app)
@@ -25,6 +26,9 @@ def access_forms():
     else:
         return render_template('index.html')
 
+#seems to work 
+# w/o 
+#googleapiclient
 api_keys = config.developer_keys
 
 def process_id(channel_id):
@@ -77,24 +81,21 @@ def process_user(username):
 @app.route("/stats/<channel_id>")
 def stats(channel_id):
     for key in api_keys:
-        youtube = build('youtube', 'v3', developerKey=key)
-        channel_request = youtube.channels().list(
-            part='snippet,statistics',
-            id=channel_id)
-        channel_response = channel_request.execute()
-        if channel_response.get('error'):
+        url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id={channel_id}&key={key}'
+        channel_response = requests.get(url)
+        if channel_response.status_code == 403:
             continue
-        else:
-            statsChannel = channel_response
+        data_search_id = json.loads(channel_response.text)
+        if data_search_id['items']:
+            statsChannel = data_search_id
             break
     else:
         return render_template('403.html')
 
     #channel info
-    infoChannel = channel_response['items'][0]['snippet']
+    infoChannel = statsChannel['items'][0]['snippet']
     title = infoChannel['title']
     description = infoChannel['description']
-
 
     #views
     totalviews = int(statsChannel["items"][0]["statistics"]["viewCount"])

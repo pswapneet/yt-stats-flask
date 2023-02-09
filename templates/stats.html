@@ -2,47 +2,43 @@
 
 {% block title %}ytstat.com | {{ title }}{% endblock %}
 
-{% block customcss %} 
+{% block customcss %}
+
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/statstyle.css') }}">
 {% endblock %}
-
 {% block content %}
-<h1> {{ title }}</h1>
-    <div class="recentvid">
-        <p>Most recent video published at: 
-            {{ search_resource["items"][0]["snippet"]["publishedAt"] }} 
-            with the title <b>{{ search_resource["items"][0]["snippet"]["title"] }}</b>. 
-            here is the thumbnail: 
-            <img src="{{ search_resource["items"][0]["snippet"]["thumbnails"]["default"]["url"]}}" alt="thumbnail">
-            <br>
-            video length: {{ latest_video_duration }} 
-        </p>  
-    </div>
-    <div class="disc">
-        <h2>Description: {{ description }}</h2>
-    </div>
-    <div class="container">
-        <!-- Column 1 -->
-        <div class="column">
-        <!-- Content for column 1 -->
-            <h3>Total number of uploaded videos on channel: 
-            {{ totalvideos }}
-            </h3>
-            <h4>Total number of views for the channel's 
-            {{ totalvideos }} videos: {{ totalviews }}<br>
-            </h4>
-        </div>
-        <!-- Column 2 -->
-        <div class="column">
-        <!-- Content for column 2 -->
-            <h4>Total number of subs: 
-            {{ totalsubs }}
-            </h4>
-            <h4>LIVE status: 
-                {{ search_resource["items"][0]["snippet"]["liveBroadcastContent"] }}
-                </h4>
-            
 
+  <div class="ytstats-container">
+    <div class="ytstats-col-left">
+
+      <div class="ytstats-title">
+        <h3 class="h3-title-desc">Title:</h3>
+        <h1>{{ title }}</h1>
         </div>
+      <div class="ytstats-description">
+        <h3 class="h3-title-desc">Description:</h3>
+        <p class="p-desc">{{ description }}</p>
+      </div>
+      <div class="ytstats-details">
+        <h4>Total number of uploaded videos on channel: </h4>
+           <p class="p-stats"> {{ totalvideos }} </p>
+        <h4>Total number of views for the channel's {{ totalvideos }} videos: {{ totalviews }}</h4>
+        <h4>Total number of subs: {{ totalsubs }}</h4>
+      </div>
     </div>
-    {% endblock %}
+
+    <div class="ytstats-col-right">
+      <div class="ytstats-recent-video">
+        <h3>Most recent video published:</h3>
+          <p>{{ search_resource["items"][0]["snippet"]["publishedAt"] }} </p> 
+          <h3>with the title </h3> 
+          <p><b>{{ search_resource["items"][0]["snippet"]["title"] }}</b>.</p> 
+          <h5>Here is the thumbnail: </h5> 
+          <img src="{{ search_resource["items"][0]["snippet"]["thumbnails"]["default"]["url"]}}" alt="thumbnail">
+          <h6>video length: </h6>
+          <p>{{ latest_video_duration }} </p>
+        </p>  
+      </div>
+    </div>
+  </div>
+{% endblock %}

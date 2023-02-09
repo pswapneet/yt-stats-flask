@@ -5,32 +5,31 @@
         <img src="{{ url_for('static', filename='img/ytstat.png') }}" alt="ytstat.com" width="273" height="65">
       </a>
     </div>
-
-
+    <div class="form-inline">
+      <h3 class="forms_header_text">&nbsp;&nbsp;&nbsp;YouTube Channel Search</h3>
+  </div>
   
-    <form class="navbar-form navbar-left" id="usernameSelected" method="post" onsubmit="return validateUsernameForm()">
+  <form class="navbar-form navbar-left" id="usernameSelected" method="post" onsubmit="return validateUsernameForm()">
+    <div class="input-group">
+      <input type="text" class="form-control" id="username_input" name="username" placeholder="Enter Channel Name">
+      <span class="input-group-btn">
+        <input type="hidden" name="input_type" value="username">
+        <button type="submit" style="background-color: lightgrey; margin-left: 2px;" class="btn btn-default">Search</button>    
+      </span>
+    </div>
+  </form>
+  
+  <form class="navbar-form navbar-left" id="idFormSelected" method="post" onsubmit="return validateIdForm()">
+    <div class="input-group">
+      <input type="text" class="form-control" id="channel_id_input" name="channel_id" placeholder="Enter Channel ID">
+      <span class="input-group-btn">
+        <input type="hidden" name="input_type" value="channel_id">
+        <button type="submit" style="background-color: lightgrey; margin-left: 2px;" class="btn btn-default">Search</button>    
+      </span>
+    </div>
+  </form>
 
-<h3 class="formheader"> YouTube Channel's Name... YouTube Channel' ID...</h3>      
-        <div class="form-group" style="display: flex; align-items: center;">
-        
-          
-          <input type="text" class="form-control" id="username_input" name="username" placeholder="Enter Channel Name">
-          <input type="hidden" name="input_type" value="username">
-          <button type="submit" class="btn btn-default" style="margin-left: 10px;">Search</button>    
-        
-      </form>
-
-        <form class="navbar-form navbar-left" id="idFormSelected" method="post" onsubmit="return validateIdForm()">
-        <div style="display: flex;">
-        
-        <input type="text" class="form-control" id="channel_id_input" name="channel_id" placeholder="Enter Channel ID">
-          <input type="hidden" name="input_type" value="channel_id">
-          <button type="submit" class="btn btn-default" style="margin-left: 10px;">Search</button>
-        
-        </div>
-        </form>
-      </div>
-    
   </div>
 </nav>
+
 <script src="{{ url_for('static', filename='js/indexforms.js') }}"></script>

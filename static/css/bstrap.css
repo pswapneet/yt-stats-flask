@@ -1,11 +1,14 @@
-h3.formheader {
-  font-size: 24px;
+h3.forms_header_text {
+  font-size: 18px;
   color: gray;
-  margin-top: 4px;
+  margin-top: 16px;
   margin-bottom: 0;
   margin-left: 0;
   margin-right: 0;
-  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
   }
 
 h3.footer {
@@ -13,12 +16,4 @@ h3.footer {
     font-size: 32px;
   }
 
-.form-group {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-width: 400px;
-  max-width: 500px;
-  margin: 20px 0;
-  margin-top: 0;
-  }
+

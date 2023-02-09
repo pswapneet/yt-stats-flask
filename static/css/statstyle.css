@@ -1,0 +1,70 @@
+.ytstats-container {
+  width: 100%;
+  max-width: 968px;
+  margin: 0;
+  padding: 10px;
+  display: flex;
+  background-color: #ccc;
+}
+
+.ytstats-container h1 {
+  color: #ff69b4;
+  font-size: 36px;
+  font-weight: bold;
+  text-align: left;
+  margin: 10px 0;
+}
+
+.ytstats-container h3 {
+  color: #ddd;
+  font-weight: italic;
+  margin: 10px 0;
+}
+
+.ytstats-container p {
+  color: #9c1d2a;
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.ytstats-col-left {
+  width: 50%;
+  text-align: left;
+  margin-left: 5px;
+}
+
+.ytstats-col-right {
+  width: 50%;
+  text-align: left;
+}
+
+.ytstats-title {
+  background-color: #ffb6c1;
+  border-radius: 10px;
+  border-color: #000;
+  padding: 10px;
+}
+
+.ytstats-recent-video {
+  background-color: #ffb6c1;
+  border-radius: 10px;
+  border-color: #000;
+  padding: 10px;
+}
+
+.ytstats-description {
+  background-color: #ffb6c1;
+  border-radius: 10px;
+  border-color: #000;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.ytstats-details {
+  background-color: #ffb6c1;
+  border-radius: 10px;
+  border-color: #000;
+  padding: 10px;
+  margin: 20px 0;
+}
+
