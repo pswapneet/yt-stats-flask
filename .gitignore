@@ -6,3 +6,4 @@ channels.json
 __pycache__/
 flaskenv/
 .vscode
+api_requests.log
