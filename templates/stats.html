@@ -9,35 +9,42 @@
 {% block content %}
 
   <div class="ytstats-container">
+    
     <div class="ytstats-col-left">
-
       <div class="ytstats-title">
-        <h3 class="h3-title-desc">Title:</h3>
+        <h3 class="h3-title-desc">Title</h3>
         <h1>{{ title }}</h1>
-        </div>
+      </div>
       <div class="ytstats-description">
-        <h3 class="h3-title-desc">Description:</h3>
-        <p class="p-desc">{{ description }}</p>
+        <h3 class="h3-title-desc">Description</h3>
+        <p>{{ description }}</p>
       </div>
       <div class="ytstats-details">
-        <h4>Total number of uploaded videos on channel: </h4>
-           <p class="p-stats"> {{ totalvideos }} </p>
-        <h4>Total number of views for the channel's {{ totalvideos }} videos: {{ totalviews }}</h4>
-        <h4>Total number of subs: {{ totalsubs }}</h4>
+        <h3 class="h3-title-desc">Total number of uploaded videos on channel</h3>
+        <p> {{ totalvideos }} </p>
       </div>
+      <div class="ytstats-details-middle">
+        <h3 class="h3-title-desc">Total number of views for the channel's {{ totalvideos }} videos </h3>
+        <p> {{ totalviews }}</p>
+      </div>
+      
     </div>
-
+    
     <div class="ytstats-col-right">
       <div class="ytstats-recent-video">
         <h3>Most recent video published:</h3>
-          <p>{{ search_resource["items"][0]["snippet"]["publishedAt"] }} </p> 
-          <h3>with the title </h3> 
-          <p><b>{{ search_resource["items"][0]["snippet"]["title"] }}</b>.</p> 
+        <p>{{ search_resource["items"][0]["snippet"]["publishedAt"] }} </p> 
+          <h3>With the title </h3> 
+          <p>"<b>{{ search_resource["items"][0]["snippet"]["title"] }}</b>"</p> 
           <h5>Here is the thumbnail: </h5> 
           <img src="{{ search_resource["items"][0]["snippet"]["thumbnails"]["default"]["url"]}}" alt="thumbnail">
           <h6>video length: </h6>
           <p>{{ latest_video_duration }} </p>
         </p>  
+      </div>
+      <div class="ytstats-details-middle">
+        <h3 class="h3-title-desc">Total number of subs</h3>
+        <p> {{ totalsubs }}</p>
       </div>
     </div>
   </div>
