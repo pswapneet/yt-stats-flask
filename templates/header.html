@@ -10,18 +10,18 @@
   
     <form class="navbar-form navbar-left" id="usernameSelected" method="post" onsubmit="return validateUsernameForm()">
 
-<h2> YouTube Channel's Name... YouTube Channel' ID...</h2>      
+<h3 class="formheader"> YouTube Channel's Name... YouTube Channel' ID...</h3>      
         <div class="form-group" style="display: flex; align-items: center;">
         
-          <div id="usernameSelected" style="display: inline-flex;">
+          
           <input type="text" class="form-control" id="username_input" name="username" placeholder="Enter Channel Name">
           <input type="hidden" name="input_type" value="username">
           <button type="submit" class="btn btn-default" style="margin-left: 10px;">Search</button>    
-        </div>
+        
       </form>
 
         <form class="navbar-form navbar-left" id="idFormSelected" method="post" onsubmit="return validateIdForm()">
-        <div id="idFormSelected" style="display: flex;">
+        <div style="display: flex;">
         
         <input type="text" class="form-control" id="channel_id_input" name="channel_id" placeholder="Enter Channel ID">
           <input type="hidden" name="input_type" value="channel_id">
