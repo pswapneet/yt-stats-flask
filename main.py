@@ -47,16 +47,29 @@ def process_id(channel_id):
 
 def process_user(username):
     for key in api_keys:
-        url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q={username}&type=channel&key={key}'
+        # First API request (1 quota unit)
+        # (only works for old channels e.g. pewdiepie)
+        url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet&forUsername={username}&key={key}'
         response = requests.get(url)
         if response.status_code == 403:
             continue
-        data_search_user = json.loads(response.text)
-        if data_search_user['items']:
-            channel_id = data_search_user['items'][0]['id']['channelId']
+        data_channel_user = json.loads(response.text)
+        if data_channel_user.get('items'):
+            channel_id = data_channel_user['items'][0]['id']
             break
         else:
-            return render_template('name_error.html')
+            # Second API request
+            # (works for any channel if it is found )
+            url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q={username}&type=channel&key={key}'
+            response = requests.get(url)
+            if response.status_code == 403:
+                continue
+            data_search_user = json.loads(response.text)
+            if data_search_user['items']:
+                channel_id = data_search_user['items'][0]['id']['channelId']
+                break
+            else:
+                return render_template('name_error.html')
     else: 
         return render_template('403.html')
     return redirect(f'/stats/{channel_id}')
