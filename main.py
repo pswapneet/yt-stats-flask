@@ -7,6 +7,12 @@ import requests
 from isodate import parse_duration
 import logging
 
+# configure logging
+logging.basicConfig(filename='api_requests.log', level=logging.INFO,
+                    format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
 app = Flask(__name__, static_folder='static')
 Bootstrap(app)
 
@@ -33,32 +39,36 @@ api_keys = config.developer_keys
 
 def process_id(channel_id):
     for key in api_keys:
+        logger.debug(f"Trying API key: {key}")
         url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet&id={channel_id}&key={key}'
         response = requests.get(url)
         if response.status_code == 403:
+            logging.info(f"Trying API key: {key}")
             continue
         data_search_id = json.loads(response.text)
         if "items" in data_search_id and data_search_id['items']:
+            logger.debug(f"Successfully used API key: {key}")
             channel_id = data_search_id['items'][0]['id']
             break
-
     if "items" not in data_search_id or not data_search_id['items']:
         return render_template('id_error.html')
     elif response.status_code == 403:
         return render_template('403.html')
-
     return redirect(f'/stats/{channel_id}')
 
 def process_user(username):
     for key in api_keys:
+        logger.debug(f"Trying API key: {key}")
         # First API request (1 quota unit)
         # (only works for old channels e.g. pewdiepie)
         url = f'https://www.googleapis.com/youtube/v3/channels?part=snippet&forUsername={username}&key={key}'
         response = requests.get(url)
         if response.status_code == 403:
+            logging.info(f"Trying API key: {key}")
             continue
         data_channel_user = json.loads(response.text)
         if data_channel_user.get('items'):
+            logger.debug(f"Successfully used API key: {key}")
             channel_id = data_channel_user['items'][0]['id']
             break
         else:
@@ -67,9 +77,11 @@ def process_user(username):
             url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q={username}&type=channel&key={key}'
             response = requests.get(url)
             if response.status_code == 403:
+                logging.info(f"Trying API key: {key}")
                 continue
             data_search_user = json.loads(response.text)
             if data_search_user['items']:
+                logger.debug(f"Successfully used API key: {key}")
                 channel_id = data_search_user['items'][0]['id']['channelId']
                 break
             else:
