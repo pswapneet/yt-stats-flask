@@ -185,6 +185,31 @@ def access_forms_on_stats_page(channel_id):
     else:
         return render_template('stats.html', channel_id=channel_id)
 
+#LINK BACK TO INDEX.html
+@app.route('/')
+def index():
+    # code for handling requests to the document root
+    return render_template('index.html')
+
+#LINK TO ABOUT.html
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+#SEARCH FROM ABOUT
+@app.route("/about", methods=['GET', 'POST'])
+def access_forms_on_about():
+    if request.method == 'POST':
+        input_type = request.form.get('input_type')
+        if input_type == 'username':
+            username = request.form.get('username')
+            return process_user(username)
+        elif input_type == 'channel_id':
+            channel_id = request.form.get('channel_id')
+            return process_id(channel_id)
+    else:
+        return render_template('about.html')
+
 #work in progress below
 
 def getjson():
@@ -200,9 +225,7 @@ def getjson():
         return response
     return render_template('getjson.html')
 
-@app.route("/about")
-def about():
-    return render_template("about.html")
+#RUN APP
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,6 +1,6 @@
 h3.forms_header_text {
   font-size: 18px;
-  color: gray;
+  color: #edd0d5;
   margin-top: 16px;
   margin-bottom: 0;
   margin-left: 0;
@@ -11,9 +11,25 @@ h3.forms_header_text {
   padding-right: 0;
   }
 
+.index-cntnr {
+  max-width: 968px;
+  background-color: #fff6f6;
+  border-radius: 10px;
+  border-color: #000;
+  padding: 10px;
+  margin: 10px;
+  }
+
+h5.index-cntnr {
+  font-style: italic;
+}
+
 h3.footer {
-    color: rgb(154, 154, 154); 
+    color: #954e55; 
     font-size: 24px;
+    font-style: italic;
+    margin-left: 20px;
+
   }
 
 
