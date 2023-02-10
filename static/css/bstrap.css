@@ -32,4 +32,8 @@ h3.footer {
 
   }
 
-
+.about {
+  margin: 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
