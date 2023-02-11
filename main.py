@@ -2,9 +2,9 @@ from flask import Flask, flash, redirect, render_template, request, jsonify
 from flask_bootstrap import Bootstrap
 import config
 import json
-#from googleapiclient.discovery import build
 import requests
 from isodate import parse_duration
+import html
 import logging
 
 # configure logging
@@ -162,13 +162,24 @@ def stats(channel_id):
 
     duration_string = f"{hours} hours, {minutes} minutes, {seconds} seconds"
 
+    #format date latest video
+    latestvid_date = search_response["items"][0]["snippet"]["publishedAt"]
+    latestvid_date_only = latestvid_date.split("T")[0]
+
+    #latest video title
+    url_thumbnail = search_response["items"][0]["snippet"]["thumbnails"]["default"]["url"]
+    latestvid_title = search_response["items"][0]["snippet"]["title"]
+    latestvid_title = html.unescape(latestvid_title)
+    
     return render_template('stats.html', \
         title=title, \
         description=description, \
         latest_video_duration=duration_string, \
-        search_resource=search_response, \
-        totalsubs=subs_string,
-        totalviews=views_string,
+        latest_video_title=latestvid_title, \
+        latest_url_thumb=url_thumbnail, \
+        latest_video_date=latestvid_date_only, \
+        totalsubs=subs_string, \
+        totalviews=views_string, \
         totalvideos=video_string)
 
 #KEEP THIS FUNCTION HERE 

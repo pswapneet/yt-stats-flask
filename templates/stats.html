@@ -3,9 +3,9 @@
 {% block title %}ytstat.com | {{ title }}{% endblock %}
 
 {% block customcss %}
-
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/statstyle.css') }}">
 {% endblock %}
+
 {% block content %}
 
   <div class="ytstats-container">
@@ -33,11 +33,11 @@
     <div class="ytstats-col-right">
       <div class="ytstats-recent-video">
         <h3>Most recent video published:</h3>
-        <p>{{ search_resource["items"][0]["snippet"]["publishedAt"] }} </p> 
+        <p>{{ latest_video_date }} </p> 
           <h3>With the title </h3> 
-          <p>"<b>{{ search_resource["items"][0]["snippet"]["title"] }}</b>"</p> 
+          <p>"<b>{{ latest_video_title }}</b>"</p> 
           <h5>Here is the thumbnail: </h5> 
-          <img src="{{ search_resource["items"][0]["snippet"]["thumbnails"]["default"]["url"]}}" alt="thumbnail">
+          <img src="{{ latest_url_thumb }}" alt="thumbnail">
           <h6>video length: </h6>
           <p>{{ latest_video_duration }} </p>
         </p>  
