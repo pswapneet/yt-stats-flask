@@ -7,45 +7,67 @@
 {% endblock %}
 
 {% block content %}
+<div class="ytstats-title-container">
+  <div class="ytstats-title-box">
+    <h3>Title</h3>
+    <h1><a href="https://youtube.com/channel/{{ cid }}" target="_blank">{{ title }}</a></h1>
+  </div>
+  <div class="ytstats-title-box">
+    <h3>Subscribers</h3>
+    <h2> {{ totalsubs }}</h2>
+  </div>
+  <div class="ytstats-title-box">
+    <h3>Videos</h3>
+    <h2> {{ totalvideos }} </h2>
+  </div>
+</div>
 
-  <div class="ytstats-container">
+<div class="ytstats-container">
     
-    <div class="ytstats-col-left">
-      <div class="ytstats-title">
-        <h3 class="h3-title-desc">Title</h3>
-        <h1>{{ title }}</h1>
-      </div>
-      <div class="ytstats-description">
-        <h3 class="h3-title-desc">Description</h3>
-        <p>{{ description }}</p>
-      </div>
-      <div class="ytstats-details">
-        <h3 class="h3-title-desc">Total number of uploaded videos on channel</h3>
-        <p> {{ totalvideos }} </p>
-      </div>
-      <div class="ytstats-details-middle">
-        <h3 class="h3-title-desc">Total number of views for the channel's {{ totalvideos }} videos </h3>
-        <p> {{ totalviews }}</p>
-      </div>
-      
+  <div class="ytstats-col-left">
+  
+    <div class="ytstats-description">
+      <h3 class="h3-title-desc">Description</h3>
+      <p>{{ description }}</p>
     </div>
     
-    <div class="ytstats-col-right">
-      <div class="ytstats-recent-video">
-        <h3>Most recent video published:</h3>
-        <p>{{ latest_video_date }} </p> 
-          <h3>With the title </h3> 
-          <p>"<b>{{ latest_video_title }}</b>"</p> 
-          <h5>Here is the thumbnail: </h5> 
-          <img src="{{ latest_url_thumb }}" alt="thumbnail">
-          <h6>video length: </h6>
-          <p>{{ latest_video_duration }} </p>
-        </p>  
-      </div>
-      <div class="ytstats-details-middle">
-        <h3 class="h3-title-desc">Total number of subs</h3>
-        <p> {{ totalsubs }}</p>
-      </div>
+    <div class="ytstats-details-middle">
+      <h3 class="h3-title-desc">Total Views ({{ totalvideos }} Videos) </h3>
+      <p> {{ totalviews }}</p>
+    </div>
+      <div class="ytstats-description">
+      <h3 class="h3-title-desc">Channel ID</h3>
+      <p style="font-size: 12px;">{{ cid }}</p>
+      <button class="copy-btn" onclick="copyToClipboard('{{ cid }}')">Copy ID</button>
     </div>
   </div>
+  
+  <div class="ytstats-col-right">
+    <div class="ytstats-recent-video">
+      <h3>Most Recent Video Publication Date</h3>
+      <p>{{ latest_video_date }} </p> 
+        <h3>Most Recent Video Title</h3> 
+        <h2><a href="{{url_latest}}" target="blank">"{{ latest_video_title }}"</a></h2> 
+        <a href="{{url_latest}}" target="blank"><img src="{{ latest_url_thumb }}" alt="thumbnail" style="padding-top: 10px; padding-right: 5px; padding-bottom: 10px; padding-left: 10px;"></a>
+        <h3>Most Recent Video Duration</h3>
+        <p>{{ latest_video_duration }} </p>
+      </p>  
+    </div>
+    
+  </div>
+</div>
+<script>
+  function copyToClipboard(text) {
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    
+    var btn = document.querySelector('.copy-btn');
+    btn.style.backgroundColor = 'lightgreen';
+    btn.innerHTML = 'ID Copied!';
+  }
+</script>
 {% endblock %}

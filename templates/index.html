@@ -5,14 +5,7 @@
 {% block content %}
 
 <div class="index-cntnr">
-<h1>Enter YouTube Channel Name* or ID** above!</h1>
-<h5 class="index-cntnr">*: NOTE! The YouTube Data V3 API methods "channel" or "search" is used to find the channel. Search can contain blank spaces e.g. "Mr Beast" will get you Mr. Beast's channel, while "mrbeast" will get you an old channel that is not Mr Beast. See below for why this is the case....</h5>
-<h3>The "channel" method uses 1 API quota unit, while search uses 100.</h3>
-<p>The issue is that only very old channels (e.g. "pewdiepie" or "pgatour") can be found using the "channel method.
-    This means that for most search requests for channel name, this site uses the "search" method, which uses 100x more quote units.
-    Hopefully Google will change this in the future so that this site can get more free quota. If you get a 403 error, now you know why.
-</p>
-<h5 class="index-cntnr">**YouTube Channel IDs are 24 character strings that begin with "UC"</h5>
+<h1>Enter YouTube Channel Name or ID above!</h1>
 </div>
 
 {% endblock %}

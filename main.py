@@ -170,6 +170,13 @@ def stats(channel_id):
     url_thumbnail = search_response["items"][0]["snippet"]["thumbnails"]["default"]["url"]
     latestvid_title = search_response["items"][0]["snippet"]["title"]
     latestvid_title = html.unescape(latestvid_title)
+
+    #latest video url
+    id_latest = search_response["items"][0]["id"]["videoId"]
+    latest_video_url = "https://www.youtube.com/watch?v="+id_latest
+
+    #channel id
+    channelid = channel_id
     
     return render_template('stats.html', \
         title=title, \
@@ -180,7 +187,9 @@ def stats(channel_id):
         latest_video_date=latestvid_date_only, \
         totalsubs=subs_string, \
         totalviews=views_string, \
-        totalvideos=video_string)
+        totalvideos=video_string, \
+        cid=channelid, \
+        url_latest=latest_video_url)
 
 #KEEP THIS FUNCTION HERE 
 @app.route("/stats/<channel_id>", methods=['GET', 'POST'])

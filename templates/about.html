@@ -3,5 +3,16 @@
 {% block title %}ytstat.com | About{% endblock %}
 
 {% block content %}
-    <p class="about">For any inquires email <a href="mailto: pswapneet@gmail.com">pswapneet@gmail.com</a></p>
+<h1 class="about"> Channel Name*</h1>
+<h5 class="index-cntnr">*: NOTE! The YouTube Data V3 API methods "channel" or "search" is used to find the channel. Search can contain blank spaces e.g. "Mr Beast" will get you Mr. Beast's channel, while "mrbeast" will get you an old channel that is not Mr Beast. If you are not getting the channel result you want, try adding "@" followed directly by what you think the channel name is...</h5>
+<div id="about">
+<h4 style="color: red; font-style: italic; font-weight: bold;">The "channel" method uses 1 API quota unit, while "search" uses 100.</h4>
+<p class="index-cntnr">The issue is that only very old channels (e.g. "pewdiepie" or "pgatour") can be found using the "channel method.
+    This means that for most search requests for channel name, this site uses the "search" method, which uses 100x more quote units.
+    Hopefully Google will change this in the future so that this site can get more free quota. If you get a 403 error, now you know why.
+</p>
+</div>
+<h1 class="about"> Channel ID**</h1>
+<h5 class="index-cntnr">**YouTube Channel IDs are 24 character strings that begin with "UC"</h5>
+    <p class="index-cntnr2">For any inquires email <a href="mailto: ytstat@gmx.com">ytstat [at] gmx.com</a></p>
 {% endblock %}

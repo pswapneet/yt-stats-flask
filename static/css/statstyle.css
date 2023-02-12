@@ -1,50 +1,95 @@
+.ytstats-title-container {
+  width: 100%;
+  max-width: 968px;
+  margin-top: 0;
+  margin-right: 10px;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding: 10px;
+  display: flex;
+  background-color: #9c1d2ad4;
+}
+
+.ytstats-title-container h1 {
+  color: blue; 
+  font-size: 32px;
+  font-weight: bold;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.ytstats-title-box {
+  background-color: #fff;
+  border-radius: 10px;
+  border-color: #000;
+  padding: 10px;
+  margin-top: 15px;
+  margin-right: 10px;
+  margin-bottom: 0;
+  margin-left: 10px;
+}
+
+.ytstats-title-box h2 {
+  color:#000000c1;
+  font-weight: bold;
+  font-size: 32px;
+  padding: 0;
+  margin: 0;
+}
+
+.ytstats-title-box h3 {
+  color: lightslategray;
+  font-style: italic;
+  font-size: 14px;
+  padding-top: 0;
+  padding-right: 0;
+  padding-bottom: 5px;
+  padding-left: 0;
+  margin: 0;
+}
+
 .ytstats-container {
   width: 100%;
   max-width: 968px;
   margin: 0;
   padding: 10px;
   display: flex;
-  background-color: #aa3a3a;
+  background-color: #9c1d2ad4;
 }
 
-.ytstats-container h1 {
-  color: blue; 
-  font-size: 36px;
-  font-weight: bold;
-  text-align: left;
-  margin: 0;
-  padding: 0;
+.ytstats-subs {
+  background-color: #edd0d5;
+  border-radius: 10px;
+  border-color: #000;
+  padding: 10px;
+  margin: 10px;
+  display: inline-block;
 }
 
 .ytstats-container h3 {
-  color: #3a3a3a;
+  color: #9c1d2a;
   font-style: italic;
-  margin: 10px 0;
+  font-size: 16px;
+  margin: 0;
 }
 
 .ytstats-container p {
-  color: #9c1d2a;
-  font-size: 16px;
+  color: #000;
+  font-size: 14px;
   margin: 10px 0;
 }
 
 .ytstats-col-left {
   width: 50%;
   text-align: left;
-  margin-left: 5px;
+  margin-left: 0;
 }
 
 .ytstats-col-right {
   width: 50%;
   text-align: left;
-}
-
-.ytstats-title {
-  background-color: #edd0d5;
-  border-radius: 10px;
-  border-color: #000;
-  padding: 10px;
-  margin: 10px;
 }
 
 .ytstats-recent-video {
@@ -55,8 +100,18 @@
   margin: 10px;
 }
 
+.ytstats-recent-video h2 {
+  font-weight: bold;
+  font-size: 18px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 0;
+  padding-left: 0;
+  margin: 0;
+}
+
 .ytstats-description {
-  background-color: #fff6f6;
+  background-color: #edd0d5;
   border-radius: 10px;
   border-color: #000;
   padding: 10px;
@@ -72,9 +127,20 @@
 }
 
 .ytstats-details-middle {
-  background-color: #fff6f6;
+  background-color: #edd0d5;
   border-radius: 10px;
   border-color: #000;
   padding: 10px;
   margin: 10px;
+}
+
+@media (max-width: 767px) {
+  .ytstats-title-container {
+    flex-direction: column;
+  }
+
+  .ytstats-title-box {
+    width: 95%;
+    margin-right: 10px;
+  }
 }
